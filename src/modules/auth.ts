@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
 
 export const comparePassword = (password: string, hash: string) => {
   return bcrypt.compare(password, hash);
@@ -31,7 +32,7 @@ export const createJWT = (user: {
 
 declare module "express-serve-static-core" {
   interface Request {
-    user: string | jwt.JwtPayload;
+    user: User;
   }
 }
 
@@ -50,7 +51,7 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
       throw new Error("JWT_SECRET must be defined");
     }
     const user = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = user;
+    req.user = user as User;
     next();
   } catch (err) {
     if (err instanceof jwt.JsonWebTokenError) {

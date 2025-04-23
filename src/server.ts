@@ -19,7 +19,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api",router);
+// app.use("/api",router);
 app.use("/api/product", protect, router);
 app.post("/auth/user", createUser);
 app.post("/auth/signin", signIn);

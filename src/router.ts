@@ -1,7 +1,8 @@
-import Router from "express";
+import {Router} from "express";
 import { body, check, oneOf, validationResult } from "express-validator";
 import { Request, Response } from "express";
 import { handleInputErrors } from "./modules/middleware";
+import { createProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from "./handler/product";
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -26,26 +27,21 @@ router.post("/users", (req, res) => {
 
 // TODO: product API
 
-router.get("/product", (req, res) => {});
-router.get("/product/:id", (req, res) => {});
+router.get("/product", getProducts);
+router.get("/product/:id",getOneProduct );
 router.post(
   "/product",
   body("name").isString(),
   handleInputErrors,
-  (req: Request, res: Response) => {}
+  createProduct
 );
 router.put(
   "/product/:id",
   body("name").isString(),
   handleInputErrors,
-  (req: Request, res: Response) => {}
+  updateProduct
 );
-router.delete(
-  "/product/:id",
-  body("id"),
-  handleInputErrors,
-  (req: Request, res: Response) => {}
-);
+router.delete("/product/:id", body("id"), handleInputErrors, deleteProduct);
 
 // TODO: update API
 
@@ -92,8 +88,6 @@ router.post(
   handleInputErrors,
   (req: Request, res: Response) => {}
 );
-
-// TODO:  18:17-დან უნდა გავაგრძელო და კიდევ გავდახედო ერრორის თემას და გავაანალიზო
 
 router.put(
   "/updatepoint/:id",
